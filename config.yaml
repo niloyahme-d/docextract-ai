@@ -1,0 +1,112 @@
+# =============================================================================
+# DocExtract AI - field mapping configuration
+#
+# This file defines WHAT to extract and HOW to route each document.
+# Non-developers can add/remove fields here without touching source code.
+# =============================================================================
+
+# Which routing mode to use when none is passed explicitly on the CLI/API:
+#   template  -> force template-based (fast, cheap, requires a matching layout below)
+#   ai        -> force AI-based extraction (LLM call, handles any layout)
+#   auto      -> try template match first, fall back to AI if no layout matches
+#               or if confidence is below `auto_fallback_confidence`
+routing:
+  default_mode: auto
+  auto_fallback_confidence: 0.75
+
+# Fields to extract from every document. `type` is used for light validation
+# and for casting values in the output writers.
+fields:
+  - name: vendor_name
+    type: string
+    required: true
+    description: "The company issuing the invoice/receipt"
+
+  - name: invoice_number
+    type: string
+    required: true
+    description: "Unique invoice or receipt identifier"
+
+  - name: invoice_date
+    type: date
+    required: true
+    description: "Date the document was issued (YYYY-MM-DD)"
+
+  - name: due_date
+    type: date
+    required: false
+    description: "Payment due date, if present"
+
+  - name: total_amount
+    type: currency
+    required: true
+    description: "Grand total, including tax"
+
+  - name: subtotal
+    type: currency
+    required: false
+    description: "Total before tax"
+
+  - name: tax_amount
+    type: currency
+    required: false
+    description: "Tax / VAT amount"
+
+  - name: currency
+    type: string
+    required: false
+    description: "3-letter currency code, e.g. USD"
+
+  - name: line_items
+    type: list
+    required: false
+    description: "List of {description, quantity, unit_price, amount}"
+
+# Template layouts for the fast, non-AI path. Each template defines
+# regex/positional rules for a known, consistent document format.
+# See docs/architecture.md for how a document is matched against these.
+templates:
+  - id: standard_invoice_v1
+    match_hint: "Contains the literal header 'INVOICE' and a line starting with 'Invoice #'"
+    rules:
+      vendor_name:
+        strategy: first_line
+      invoice_number:
+        strategy: regex
+        pattern: 'Invoice\s*#\s*[:\-]?\s*([A-Za-z0-9\-]+)'
+      invoice_date:
+        strategy: regex
+        pattern: 'Invoice Date\s*[:\-]?\s*([0-9]{4}-[0-9]{2}-[0-9]{2})'
+      due_date:
+        strategy: regex
+        pattern: 'Due Date\s*[:\-]?\s*([0-9]{4}-[0-9]{2}-[0-9]{2})'
+      subtotal:
+        strategy: regex
+        pattern: 'Subtotal\s*[:\-]?\s*\$?([0-9,]+\.[0-9]{2})'
+      tax_amount:
+        strategy: regex
+        pattern: 'Tax\s*[:\-]?\s*\$?([0-9,]+\.[0-9]{2})'
+      total_amount:
+        strategy: regex
+        pattern: 'Total\s*[:\-]?\s*\$?([0-9,]+\.[0-9]{2})'
+
+  - id: standard_receipt_v1
+    match_hint: "Contains the literal header 'RECEIPT'"
+    rules:
+      vendor_name:
+        strategy: first_line
+      invoice_number:
+        strategy: regex
+        pattern: 'Receipt\s*#\s*[:\-]?\s*([A-Za-z0-9\-]+)'
+      invoice_date:
+        strategy: regex
+        pattern: 'Date\s*[:\-]?\s*([0-9]{4}-[0-9]{2}-[0-9]{2})'
+      total_amount:
+        strategy: regex
+        pattern: 'Total\s*[:\-]?\s*\$?([0-9,]+\.[0-9]{2})'
+
+# OCR quality gate: extractions below this confidence get flagged instead
+# of silently accepted.
+ocr:
+  min_confidence: 0.60
+  language: eng

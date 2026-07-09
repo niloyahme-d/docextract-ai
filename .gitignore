@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Environment
+.env
+
+# Secrets
+*service_account*.json
+credentials.json
+
+# OS
+.DS_Store
+
+# Output artifacts generated at runtime
+output/
+*.log
+
+# IDE
+.vscode/
+.idea/

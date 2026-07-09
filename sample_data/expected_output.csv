@@ -1,0 +1,6 @@
+Source File,Status,Method,Confidence,Vendor Name,Invoice Number,Invoice Date,Due Date,Total Amount,Subtotal,Tax Amount,Currency,Line Items,Errors
+sample_data/invoice_acme_supplies.pdf,success,template,1.0,Acme Supplies Ltd,INV-10023,2026-03-14,2026-04-13,1366.2,1265.0,101.2,,,
+sample_data/invoice_brightpath_logistics.pdf,success,template,1.0,BrightPath Logistics Inc,INV-20567,2026-05-02,2026-06-01,1081.08,1001.0,80.08,,,
+sample_data/irregular_summit_consulting.pdf,partial,template,0.0,Summit Strategy Consulting Group,,,,,,,,,Required field 'invoice_number' not found in document.; Required field 'invoice_date' not found in document.; Required field 'total_amount' not found in document.
+sample_data/receipt_daily_grind_cafe.pdf,success,template,1.0,Daily Grind Cafe,RCT-4471,2026-06-19,,8.6,,,,,
+sample_data/scanned_receipt_greenleaf_grocery.pdf,success,template,1.0,GreenLeaf Grocery Market,RCT-8842,2026-07-05,,17.65,,,,,
