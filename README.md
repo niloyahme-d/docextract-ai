@@ -19,11 +19,15 @@ Small businesses and freelancers who process invoices/receipts by hand (or pay p
 
 *(Screen recording placeholder — run the Quick Start below locally, then record a 20-30s clip of `sample_data/` going in and `output/results.xlsx` coming out. Suggested crop: terminal command → progress bar → opened spreadsheet.)*
 
-`[Coming soon]` — live hosted demo link (Streamlit Cloud / Render), if deployed.
+
+
+https://github.com/user-attachments/assets/97d535fa-6f5b-4adb-b761-a657b82ebbe8
+
+
 
 ## Why hybrid extraction
 
-Most tools force a choice: brittle-but-free regex parsing, or flexible-but-costly LLM calls on every document. DocExtract AI's router tries a fast, zero-cost **template match** first (regex/positional rules defined in `config.yaml`), and only falls back to an **AI-based extraction** call when no template matches the document's layout, or the match confidence is too low to trust. In practice this means a recurring vendor's invoices cost nothing to process after the first template is written, while genuinely novel document layouts still get extracted correctly via the LLM.
+Most tools force a choice: brittle-but-free regex parsing, or flexible-but-costly LLM calls on every document. DocExtract AI's router tries a fast, zero-cost **template match** first (regex/positional rules defined in `config.yaml`). It only falls back to an **AI-based extraction** call when no template matches the document's layout, or the match confidence is too low to trust. In practice, this means a recurring vendor's invoices cost nothing to process after the first template is written, while genuinely novel document layouts are still extracted correctly via the LLM.
 
 Full technical write-up, including the confidence-scoring formula and a worked example against the sample documents: **[docs/architecture.md](docs/architecture.md)**.
 
