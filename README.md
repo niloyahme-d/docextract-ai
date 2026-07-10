@@ -17,9 +17,6 @@ Small businesses and freelancers who process invoices/receipts by hand (or pay p
 
 ## Demo
 
-*(Screen recording placeholder — run the Quick Start below locally, then record a 20-30s clip of `sample_data/` going in and `output/results.xlsx` coming out. Suggested crop: terminal command → progress bar → opened spreadsheet.)*
-
-
 
 https://github.com/user-attachments/assets/97d535fa-6f5b-4adb-b761-a657b82ebbe8
 
